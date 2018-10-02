@@ -22,8 +22,12 @@
     "csv-loader": "^3.0.2"
   },
   "dependencies": {
+    "babel-plugin-emotion": "^9.2.11",
+    "emotion": "^9.2.12",
+    "papaparse": "^4.6.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-emotion": "^9.2.12",
     "victory": "^30.4.1"
   }
 }
