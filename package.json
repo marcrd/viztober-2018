@@ -18,7 +18,8 @@
   "homepage": "https://github.com/marcrd/viztober-2018#readme",
   "devDependencies": {
     "@storybook/react": "^3.4.11",
-    "babel-core": "^6.26.3"
+    "babel-core": "^6.26.3",
+    "csv-loader": "^3.0.2"
   },
   "dependencies": {
     "react": "^16.5.2",
