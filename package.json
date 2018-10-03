@@ -24,6 +24,7 @@
   "dependencies": {
     "babel-plugin-emotion": "^9.2.11",
     "emotion": "^9.2.12",
+    "lodash": "^4.17.11",
     "papaparse": "^4.6.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
