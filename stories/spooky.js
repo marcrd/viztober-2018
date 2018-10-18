@@ -5,6 +5,7 @@ import { VictoryChart, VictoryLegend, VictoryAxis, VictoryStack, VictoryBar } fr
 import { storiesOf } from '@storybook/react';
 // https://www.kaggle.com/rounakbanik/pokemon
 import pokemonData from '../datasets/pokemon.csv';
+import Scatter from './components/scatter';
 
 /**
  * Breaks down collections by key.
@@ -187,5 +188,10 @@ storiesOf('Pokemon', module)
           />
         </VictoryChart>
       </GraphWrapper>
+    );
+  })
+  .add('Packed Pokemon Charts', () => {
+    return (
+      <Scatter width={500} height={500} />
     );
   });

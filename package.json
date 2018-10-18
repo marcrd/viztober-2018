@@ -22,7 +22,14 @@
     "csv-loader": "^3.0.2"
   },
   "dependencies": {
+    "@vx/gradient": "0.0.165",
+    "@vx/group": "0.0.170",
+    "@vx/hierarchy": "0.0.170",
+    "@vx/mock-data": "0.0.165",
+    "@vx/scale": "0.0.165",
     "babel-plugin-emotion": "^9.2.11",
+    "d3-array": "^1.2.4",
+    "d3-hierarchy": "^1.1.8",
     "emotion": "^9.2.12",
     "lodash": "^4.17.11",
     "papaparse": "^4.6.0",
