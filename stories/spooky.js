@@ -1,10 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import styled from 'react-emotion';
+import _ from 'lodash';
 import { VictoryChart, VictoryLegend, VictoryAxis, VictoryStack, VictoryBar } from 'victory';
 import { storiesOf } from '@storybook/react';
 // https://www.kaggle.com/rounakbanik/pokemon
 import pokemonData from '../datasets/pokemon.csv';
+import Scatter from './components/scatter';
 
 /**
  * Breaks down collections by key.
@@ -41,6 +42,17 @@ const mapGenerationToVisualization = (generationCollection) => {
   });
 }
 
+const mapPokemonByType = (typeCollection) => {
+  const keyedByType = Object.keys(typeCollection);
+
+  return keyedByType.map(type => {
+    return {
+      x: type.replace(/^\w/, char => char.toUpperCase()),
+      y: typeCollection[type].length
+    }
+  });
+};
+
 const PokemonWrapper = styled.div({
   fontFamily: `-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif`,
   fontSize: 16
@@ -74,6 +86,11 @@ const GraphWrapper = styled.div({
 
 storiesOf('Pokemon', module)
   .add('Number of Ghost Pokemon', () => {
+    const totalPrimaryGhostPokemon = pokemonData.filter(pokemon => pokemon.type1 === 'ghost');
+    const totalSecondaryGhostPokemon = pokemonData.filter(pokemon => pokemon.type2 === 'ghost');
+    const allGhostPokemon = pokemonData.filter(pokemon => pokemon.type1 === 'ghost' || pokemon.type2 === 'ghost');
+    const primaryByGeneration = reducerByKey(totalPrimaryGhostPokemon, 'generation');
+    const secondaryByGeneration = reducerByKey(totalSecondaryGhostPokemon, 'generation');
     const sortedPrimaryByGeneration = mapGenerationToVisualization(primaryByGeneration);
     const sortedSecondaryByGeneration = mapGenerationToVisualization(secondaryByGeneration);
 
@@ -128,11 +145,53 @@ storiesOf('Pokemon', module)
         </GraphWrapper>
       </PokemonWrapper>
     );
-  });
+  })
+  .add('Ghost Pokemon vs Other Types', () => {
+    const primaryPokemonByType = reducerByKey(pokemonData, 'type1');
+    const mappedPrimaryPokemonByType = mapPokemonByType(primaryPokemonByType);
+    const sortedPrimaryPokemoneyByType = _.sortBy(mappedPrimaryPokemonByType, [(type) => type.y])
+    const typeColorScale=[
+      '#557287',
+      '#EC1E75',
+      '#90D6F4',
+      '#6C8079',
+      '#3A3C74',
+      '#51959E',
+      '#A1492F',
+      '#646582',
+      '#683892',
+      '#785327',
+      '#E5E54A',
+      '#95472B',
+      '#B2252D',
+      '#AD3377',
+      '#49A25D',
+      '#3AD061',
+      '#CFA3AF',
+      '#2061E1'
+    ];
 
-// Build out Pokemon Data set
-const totalPrimaryGhostPokemon = pokemonData.filter(pokemon => pokemon.type1 === 'ghost');
-const totalSecondaryGhostPokemon = pokemonData.filter(pokemon => pokemon.type2 === 'ghost');
-const allGhostPokemon = pokemonData.filter(pokemon => pokemon.type1 === 'ghost' || pokemon.type2 === 'ghost');
-const primaryByGeneration = reducerByKey(totalPrimaryGhostPokemon, 'generation');
-const secondaryByGeneration = reducerByKey(totalSecondaryGhostPokemon, 'generation');
+    return (
+      <GraphWrapper>
+        <VictoryChart
+          padding={{ top: 20, bottom: 30, left: 60 }}
+          width={600}
+          height={450}
+          domainPadding={{ y: 10 }}>
+          <VictoryBar
+            horizontal
+            colorScale={typeColorScale}
+            style={{
+              data: { fill: data => typeColorScale[data._x - 1] }
+            }}
+            data={sortedPrimaryPokemoneyByType}
+          />
+        </VictoryChart>
+      </GraphWrapper>
+    );
+  })
+  .add('Packed Pokemon Charts', () => {
+    return (
+      <Scatter width={500} height={500} />
+    );
+  });
